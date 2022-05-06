@@ -14,6 +14,10 @@ public class Trie {
         root = new TrieNode();
     }
 
+    public TrieNode getRoot() {
+        return this.root;
+    }
+
     /**
      * 给字典树插入一个字符串
      * @param word
