@@ -44,6 +44,8 @@
 
 package com.vareyxu.leetcode.editor.cn;
 
+import com.vareyxu.leetcode.editor.cn.common.UnionFind;
+
 public class NumberOfIslands{
     public static void main(String[] args) {
        Solution solution = new NumberOfIslands().new Solution();
@@ -66,6 +68,45 @@ class Solution {
             }
         }
         return result;
+    }
+
+    public int numIslandsByUnionFind(char[][] grid) {
+        if (grid.length == 0) {
+            return 0;
+        }
+
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == '1') {
+                    count++;
+                }
+            }
+        }
+        int size = grid.length * grid[0].length;
+        int n = grid[0].length;
+        UnionFind unionFind = new UnionFind(size, count);
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == '1') {
+                    grid[i][j] = '0';
+
+                    if (i+1 < grid.length && grid[i+1][j] == '1') {
+                        unionFind.merge(i*n+j, (i+1)*n+j);
+                    }
+                    if (i-1 >= 0 && grid[i-1][j] == '1') {
+                        unionFind.merge(i*n+j, (i-1)*n+j);
+                    }
+                    if (j+1 < grid[0].length && grid[i][j+1] == '1') {
+                        unionFind.merge(i*n+j, i*n+j+1);
+                    }
+                    if (j-1 >= 0 && grid[i][j-1] == '1') {
+                        unionFind.merge(i*n+j, i*n+j-1);
+                    }
+                }
+            }
+        }
+        return unionFind.getCount();
     }
 
     public void dfs(char[][]grid, int r, int c) {
